@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="5b334c88-743a-4c04-b4e6-2a6f17d1f242" basePath="variables-rest" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="variables-and-restFlow" doc:id="3caf9883-8a72-413d-84fa-b28ebe9b5259" >
+		<http:listener doc:name="Listener" doc:id="913c664a-b901-47d8-abed-7a7fcd2d9842" config-ref="HTTP_Listener_config" path="add-variables" allowedMethods="POST"/>
+		<logger level="INFO" doc:name="Logger" doc:id="bced4fa7-6c58-4fe8-98ac-674f550a8cf1" message="#[payload]"/>
+		<set-variable value="#[payload.empId]" doc:name="Set Variable" doc:id="20d31cee-6002-4698-b68c-e552724de5cf" variableName="empId"/>
+		<logger level="INFO" doc:name="Logger" doc:id="bec33437-35e4-4195-9626-46617a211789" message="#[vars.empId]"/>
+	</flow>
+</mule>
