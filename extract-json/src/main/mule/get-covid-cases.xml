@@ -4,9 +4,9 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<flow name="get-covid-casesFlow" doc:id="a0e7ce65-4100-4e67-8be4-38e4fc8c0cb8" >
-		<http:listener doc:name="Listener" doc:id="9548b36f-de44-4ede-b574-d6deddae30b1" config-ref="extractjson_httpconfig" path="get-cases" allowedMethods="GET"/>
-		<logger level="INFO" doc:name="Logger" doc:id="e9adb6d2-156b-4407-8a49-1fb18d1486e6" message="#[attributes.headers]"/>
-		<logger level="INFO" doc:name="Logger" doc:id="52a5549b-d802-4cd7-8fe2-ed2cad0d2fe6" message="#[attributes.queryParams]"/>
+	<flow name="get-covid-casesFlow1" doc:id="426064fe-e870-4cce-accb-0b58c4ab6d1a" >
+		<http:listener doc:id="38cc840a-4a77-43f8-b520-462fbf856f70" doc:name="" config-ref="extractjson_httpconfig" path="get-cases" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="Logger" doc:id="e9adb6d2-156b-4407-8a49-1fb18d1486e6" message="#[attributes.headers]" />
+		<logger level="INFO" doc:name="Logger" doc:id="52a5549b-d802-4cd7-8fe2-ed2cad0d2fe6" message="#[attributes.queryParams]" />
 	</flow>
 </mule>
