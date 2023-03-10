@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="8c2ed6aa-dbba-46f4-b57d-3c76fc4e8e55" basePath="employee" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="bb0bbd7c-6c17-43f5-9c86-432e4334640a" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="root026" database="demo" />
+	</db:config>
+	<flow name="create-employeeFlow" doc:id="dbb73d27-e63a-4511-9e8f-f7c25cef4fd1" >
+		<http:listener doc:name="Listener" doc:id="6ccbf4bf-fad2-4ade-8356-de8c81935070" config-ref="HTTP_Listener_config" path="create-emp" allowedMethods="POST"/>
+		<logger level="INFO" doc:name="Logger" doc:id="235a02ec-3082-47b2-8271-ad31b757e25d" message="#[payload]"/>
+		<db:insert doc:name="Insert Employee" doc:id="ddaa7d8c-7e89-4353-bcb2-96a0aa31623d" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into employee (empId, empName, empAge) values (:empId, :empName, :empAge);]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	empId:payload.empId,
+	empName:payload.empName,
+	empAge:payload.empAge
+}]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="Set Response" doc:id="6c8c1537-3607-4891-9bc6-97af8697fe83" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"status":200,
+	"message":"success"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="1252f4c8-8f70-4b19-92f4-5e8aec7f7379" message="Flow over"/>
+	</flow>
+</mule>
